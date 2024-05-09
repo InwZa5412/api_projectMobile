@@ -41,7 +41,7 @@ app.get('/users/:id', (req, res) => {
 app.post('/users/login',jsonParser, function(req, res, next){
     connection.execute(
         'SELECT * FROM users WHERE username=?',
-        [req.body.id,req.body.username, req.body.password, req.body.fname, req.body.lname, req.body.avatar],
+        [req.body.username,],
         function(err, users, fields){
             if(err){
                 res.json({status: 'error', message: err});
