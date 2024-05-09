@@ -6,7 +6,7 @@ const app = express()
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser')
 const jsonParser = bodyParser.json()
-const saltPounds = 10;
+var saltPounds = 10;
 const secret = 'Venom-Toxin-2024'
 
 app.use(cors())
@@ -60,7 +60,7 @@ app.post('/users/login',jsonParser, function(req, res, next){
 })
 
 app.post('/users/register',jsonParser, (req, res, next) => {
-   bcrypt.hash(req.body.password, saltRounds, function(err, hash){
+   bcrypt.hash(req.body.password, saltPounds, function(err, hash){
     connection.execute(
         'INSERT INTO users (username,password,fname,lname,avatar) VALUES (?,?,?,?,?)'
         [req.body.username,req.body.password,req.body.fname,req.body.lname,req.body.avatar],
