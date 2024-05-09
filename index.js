@@ -37,7 +37,7 @@ app.get('/users/:id', (req, res) => {
     )
 })
 
-app.post('/user/login',jsonParser, function(req, res, next){
+app.post('/users/login',jsonParser, function(req, res, next){
     connection.execute(
         'SELECT * FROM users WHERE username=?',
         [req.body.username],
