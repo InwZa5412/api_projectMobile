@@ -82,7 +82,7 @@ app.post('/users/register', jsonParser, (req, res, next) => {
  })
 
 app.post('/users/authen',jsonParser, function(req, res, next){
-    const token = req.headers.authorization
+    const token = req.headers.authorization.split(' ')[1]
     res.json({token})
 })
 
