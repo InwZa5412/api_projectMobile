@@ -93,7 +93,14 @@ app.post('/users/authen',jsonParser, function(req, res, next){
     }
 })
 
-
+app.get('/animal', (req, res) => {
+    connection.query(
+        'SELECT * FROM animal',
+        function (err, record, fields) {
+            res.send(record)
+        }
+    )
+})
 
 
 app.put('/users/update', (req, res) => {
