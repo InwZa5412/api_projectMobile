@@ -55,7 +55,7 @@ app.post('/users/login',jsonParser, function(req, res, next){
                 if(isLogin){
                     const user = [req.body]
                     var token = jwt.sign({username : users[0].username}, secret);
-                    res.json({status: 'ok',message:'login success', token})
+                    res.json({status: 'ok',message:'login success', token, user})
                 }else{
                     res.json({status: 'error',message:'login failed'})
                 }
