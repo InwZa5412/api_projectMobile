@@ -81,6 +81,14 @@ app.post('/users/register', jsonParser, (req, res, next) => {
     })
  })
 
+app.post('/users/authen',jsonParser, function(req, res, next){
+    const token = req.headers.authorization
+    res.json({token})
+})
+
+
+
+
 app.put('/users/update', (req, res) => {
     connection.query(
         'UPDATE `users` SET `fname`=?, `lname`=?, `username`=?, `password`=?, `avatar`=? WHERE id =?',
