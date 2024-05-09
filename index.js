@@ -3,6 +3,7 @@ const cors = require('cors')
 const mysql = require('mysql2')
 require('dotenv').config()
 const app = express()
+const secret = 'Venom-Toxin-2024'
 
 app.use(cors())
 app.use(express.json())
@@ -32,7 +33,28 @@ app.get('/users/:id', (req, res) => {
     )
 })
 
-app.post('/users', (req, res) => {
+app.post('/users/login',jsonParser, function(req, res, next){
+    connection.execute(
+    'SELECT * FROM users WHERE username=?',
+    [req.body.username],
+    function(err,users,fields){
+        if(err){res.json({status:'error',message: err}); return}
+        if(users.length ==0){res.json({status:'error',message: 'no user found'}); return}
+        
+        bcrypt.compare(req.body.password, users[0].password, function(err, isLogin){
+            if(isLogin){
+                res.json({status: 'ok', message: 'login success'})
+            } else{
+                res.json({status: 'error', message: 'login failed'})
+            }
+
+        });
+    }
+    );
+
+})
+
+app.post('/users/create', (req, res) => {
     connection.query(
         'INSERT INTO `users` (`fname`, `lname`, `username`, `password`, `avatar`) VALUES (?, ?, ?, ?, ?)',
         [req.body.fname, req.body.lname, req.body.username, req.body.password, req.body.avatar],
@@ -47,7 +69,7 @@ app.post('/users', (req, res) => {
     )
 })
 
-app.put('/users', (req, res) => {
+app.put('/users/update', (req, res) => {
     connection.query(
         'UPDATE `users` SET `fname`=?, `lname`=?, `username`=?, `password`=?, `avatar`=? WHERE id =?',
         [req.body.fname, req.body.lname, req.body.username, req.body.password, req.body.avatar, req.body.id],
@@ -57,7 +79,7 @@ app.put('/users', (req, res) => {
     )
 })
 
-app.delete('/users', (req, res) => {
+app.delete('/users/delete', (req, res) => {
     connection.query(
         'DELETE FROM `users` WHERE id =?',
         [req.body.id],
