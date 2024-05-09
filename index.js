@@ -52,6 +52,10 @@ app.post('/users/login', jsonParser, function(req, res, next){
             }
             
             bcrypt.compare(req.body.password, users[0].password, function(err, isLogin){
+                if(err) {
+                    res.json({status: 'error', message: err});
+                    return;
+                }
                 if(isLogin) {
                     var token = jwt.sign({username: users[0].username}, secret);
                     res.json({status: 'ok', message: 'login success', token: token});
@@ -62,6 +66,7 @@ app.post('/users/login', jsonParser, function(req, res, next){
         }
     );
 });
+
 
 
 app.post('/users/register', jsonParser, (req, res, next) => {
