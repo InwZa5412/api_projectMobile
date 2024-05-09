@@ -41,7 +41,7 @@ app.get('/users/:id', (req, res) => {
 app.post('/users/login',jsonParser, function(req, res, next){
     connection.execute(
         'SELECT * FROM users WHERE username=?',
-        [req.body.username],
+        [req.body.id,req.body.username, req.body.password, req.body.fname, req.body.lname, req.body.avatar],
         function(err, users, fields){
             if(err){
                 res.json({status: 'error', message: err});
@@ -53,7 +53,7 @@ app.post('/users/login',jsonParser, function(req, res, next){
             }
             bcrypt.compare(req.body.password, users[0].password, function(err, isLogin){
                 if(isLogin){
-                    const user = [req.body.id,req.body.username, req.body.password, req.body.fname, req.body.lname, req.body.avatar]
+                    const user = req.body
                     var token = jwt.sign({username : users[0].username}, secret);
                     res.json({status: 'ok',message:'login success', token, user})
                 }else{
