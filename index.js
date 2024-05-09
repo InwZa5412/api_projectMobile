@@ -97,7 +97,11 @@ app.get('/animal', (req, res) => {
     connection.query(
         'SELECT * FROM animal',
         function (err, record, fields) {
-            res.send(record)
+            if (err) {
+                res.status(500).send(err);
+                return;
+            }
+            res.json(record);
         }
     )
 })
