@@ -83,7 +83,7 @@ app.post('/users/register', jsonParser, (req, res, next) => {
 
 app.post('/users/authen',jsonParser, function(req, res, next){
     const token = req.headers.authorization.split(' ')[1]
-    var decoded = jwt.cerify(token, secret)
+    var decoded = jwt.verify(token, secret)
     res.json({decoded})
 })
 
