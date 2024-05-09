@@ -62,7 +62,7 @@ app.post('/users/login',jsonParser, function(req, res, next){
 app.post('/users/register',jsonParser, (req, res, next) => {
    bcrypt.hash(req.body.password, saltRounds, function(err, hash){
     connection.execute(
-        'INSERT INTO user (username,password,fname,lname,avatar) VALUES (?,?,?,?,?)'
+        'INSERT INTO users (username,password,fname,lname,avatar) VALUES (?,?,?,?,?)'
         [req.body.username,hash,req.body.fname,req.body.lname,req.body.avatar],
         function(err, results, fields){
             if(err){
