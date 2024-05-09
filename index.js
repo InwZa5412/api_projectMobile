@@ -6,7 +6,7 @@ const app = express()
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser')
 const jsonParser = bodyParser.json()
-var saltPounds = 10;
+const saltPounds = 10;
 const secret = 'Venom-Toxin-2024'
 
 app.use(cors())
