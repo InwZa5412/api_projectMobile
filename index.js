@@ -106,6 +106,16 @@ app.get('/animal', (req, res) => {
     )
 })
 
+app.get('/animal/:id', (req, res) => {
+    const id = req.params.id;
+    connection.query(
+        'SELECT * FROM animal WHERE id = ?', [id],
+        function (err, results, fields) {
+            res.json(results)
+        }
+    )
+})
+
 
 app.put('/users/update', (req, res) => {
     connection.query(
