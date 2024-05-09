@@ -59,20 +59,21 @@ app.post('/users/login',jsonParser, function(req, res, next){
 
 })
 
-app.post('/users/register',jsonParser, (req, res, next) => {
-    connection.execute(
-        'INSERT INTO users (username,password,fname,lname,avatar) VALUES (?,?,?,?,?)'
-        [req.body.username,req.body.password,req.body.fname,req.body.lname,req.body.avatar],
-        function(err, results, fields){
-            if(err){
-                res.json({status: 'error',message: err})
-                return
-            }
-            res.json({status: 'ok'})
-        }
-    );
-  
-})
+app.post('/users/register', jsonParser, (req, res, next) => {
+    bcrypt.hash(req.body.password, saltPounds, function(err, hash){
+     connection.execute(
+         'INSERT INTO users (username,password,fname,lname,avatar) VALUES (?,?,?,?,?)',
+         [req.body.username, hash, req.body.fname, req.body.lname, req.body.avatar],
+         function(err, results, fields){
+             if(err){
+                 res.json({status: 'error', message: err})
+                 return
+             }
+             res.json({status: 'ok'})
+         }
+     );
+    })
+ })
 
 app.put('/users/update', (req, res) => {
     connection.query(
