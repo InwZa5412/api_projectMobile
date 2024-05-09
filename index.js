@@ -3,6 +3,10 @@ const cors = require('cors')
 const mysql = require('mysql2')
 require('dotenv').config()
 const app = express()
+const bcrypt = require('bcrypt');
+const bodyParser = require('body-parser')
+const jsonParser = bodyParser.json()
+const saltPounds = 10;
 const secret = 'Venom-Toxin-2024'
 
 app.use(cors())
@@ -55,19 +59,20 @@ app.post('/users/login',jsonParser, function(req, res, next){
 
 })
 
-app.post('/users/create', (req, res) => {
-    connection.query(
-        'INSERT INTO `users` (`fname`, `lname`, `username`, `password`, `avatar`) VALUES (?, ?, ?, ?, ?)',
-        [req.body.fname, req.body.lname, req.body.username, req.body.password, req.body.avatar],
-         function (err, results, fields) {
-            if (err) {
-                console.error('Error in POST /users:', err);
-                res.status(500).send('Error adding user');
-            } else {
-                res.status(201).send(results);
+app.post('/users/register',jsonParser, (req, res, next) => {
+   bcrypt.hash(req.body.password, saltRounds, function(err, hash){
+    connection.execute(
+        'INSERT INTO user (username,password,fname,lname,avatar) VALUES (?,?,?,?,?)'
+        [req.body.username,hash,req.body.fname,req.body.lname,req.body.avatar],
+        function(err, results, fields){
+            if(err){
+                res.json({status: 'error',message: err})
+                return
             }
+            res.json({status: 'ok'})
         }
-    )
+    );
+   })
 })
 
 app.put('/users/update', (req, res) => {
