@@ -3,6 +3,7 @@ const cors = require('cors')
 const mysql = require('mysql2')
 require('dotenv').config()
 const app = express()
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser')
 const jsonParser = bodyParser.json()
