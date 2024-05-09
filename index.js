@@ -37,35 +37,29 @@ app.get('/users/:id', (req, res) => {
     )
 })
 
-app.post('/users/login', jsonParser, function(req, res, next){
+app.post('/user/login',jsonParserm, function(req, res, next){
     connection.execute(
         'SELECT * FROM users WHERE username=?',
         [req.body.username],
         function(err, users, fields){
-            if(err) {
-                res.json({status:'error', message: err});
-                return;
+            if(err){
+                res.json({status: 'error', message: err});
+                return
             }
-            if(users.length == 0) {
-                res.json({status:'error', message: 'no user found'});
-                return;
+            if(users.length == 0){
+                res.json({status: 'error',message:'no user found'});
+                return
             }
-            
             bcrypt.compare(req.body.password, users[0].password, function(err, isLogin){
-                if(err) {
-                    res.json({status: 'error', message: err});
-                    return;
-                }
-                if(isLogin) {
-                    var token = jwt.sign({username: users[0].username}, secret);
-                    res.json({status: 'ok', message: 'login success', token: token});
-                } else {
-                    res.json({status: 'error', message: 'login failed'});
+                if(isLogin){
+                    res.json({status: 'ok',message:'login success'})
+                }else{
+                    res.json({status: 'error',message:'login failed'})
                 }
             });
         }
     );
-});
+})
 
 
 
