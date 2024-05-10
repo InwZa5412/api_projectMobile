@@ -116,6 +116,32 @@ app.get('/animal/:id', (req, res) => {
     )
 })
 
+app.get('/topanimal', (req, res) => {
+    connection.query(
+        'SELECT * FROM topanimal',
+        function (err, record, fields) {
+            if (err) {
+                res.status(500).send(err);
+                return;
+            }
+            res.json(record);
+        }
+    )
+})
+
+
+app.get('/topanimal/:id', (req, res) => {
+    const id = req.params.id;
+    connection.query(
+        'SELECT * FROM topanimal WHERE id = ?', [id],
+        function (err, results, fields) {
+            res.json(results)
+        }
+    )
+})
+
+
+
 
 app.put('/users/update', (req, res) => {
     connection.query(
