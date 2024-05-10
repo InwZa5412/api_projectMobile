@@ -118,7 +118,7 @@ app.get('/animal/:id', (req, res) => {
 
 app.get('/topanimal', (req, res) => {
     connection.query(
-        'SELECT * FROM topanimal',
+        'SELECT animal.* FROM animal INNER JOIN topanimal ON animal.id = topanimal.animalid',
         function (err, record, fields) {
             if (err) {
                 res.status(500).send(err);
