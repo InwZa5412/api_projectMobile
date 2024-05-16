@@ -44,20 +44,20 @@ app.post('/users/login',jsonParser, function(req, res, next){
         [req.body.username],
         function(err, users, fields){
             if(err){
-                res.json({status: 'error', message: err});
+                res.status(401).json({status: 'error', message: err});
                 return
             }
             if(users.length == 0){
-                res.json({status: 'error',message:'no user found'});
+                res.status(400).json({status: 'error',message:'no user found'});
                 return
             }
             const user = users[0];
             bcrypt.compare(req.body.password, users[0].password, function(err, isLogin){
                 if(isLogin){
                     var token = jwt.sign({username : users[0].username}, secret);
-                    res.json({status: 'ok',message:'login success', token, user})
+                    res.status(200).json({status: 'ok',message:'login success', token, user})
                 }else{
-                    res.json({status: 'error',message:'login failed'})
+                    res.status(401).json({status: 'error',message:'login failed'})
                 }
             });
         }
